@@ -1,0 +1,96 @@
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class MovieBookingSystem {
+    private ArrayList<Movie> movies;
+
+    public MovieBookingSystem() {
+        movies = new ArrayList<>();
+        initializeMovies();
+    }
+//bob
+    //w
+    private void initializeMovies() {
+        movies.add(new Movie("Avengers: Endgame", 5));
+        movies.add(new Movie("Inception", 5));
+        movies.add(new Movie("The Lion King", 5));
+        movies.add(new Movie("Frozen II", 5));
+    }
+
+    public ArrayList<Movie> getMovies() {
+        return movies;
+    }
+
+    public static void main(String[] args) {
+        MovieBookingSystem system = new MovieBookingSystem();
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+
+        while (true) {
+            // Display menu
+            System.out.println("\nMovie Ticket Booking System");
+            System.out.println("1. View Movies");
+            System.out.println("2. Book Ticket");
+            System.out.println("3. Cancel Ticket");
+            System.out.println("4. Exit");
+            System.out.print("Enter your choice: ");
+
+            choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1: // View Movies
+                    System.out.println("\nAvailable Movies:");
+                    for (int i = 0; i < system.getMovies().size(); i++) {
+                        System.out.println((i + 1) + ". " + system.getMovies().get(i).getTitle());
+                    }
+                    break;
+                case 2: // Book Ticket
+                    System.out.println("\nEnter the movie number to book: ");
+                    int movieIndex = scanner.nextInt() - 1;
+                    scanner.nextLine(); // Consume newline
+
+                    if (movieIndex >= 0 && movieIndex < system.getMovies().size()) {
+                        Movie selectedMovie = system.getMovies().get(movieIndex);
+                        System.out.print("Enter your name: ");
+                        String name = scanner.nextLine();
+
+                        if (selectedMovie.bookTicket(name)) {
+                            System.out.println("Booking successful!");
+                        } else {
+                            System.out.println("Sorry, no available seats.");
+                        }
+                    } else {
+                        System.out.println("Invalid movie selection.");
+                    }
+                    break;
+                case 3: // Cancel Ticket
+                    System.out.println("\nEnter the movie number to cancel from: ");
+                    movieIndex = scanner.nextInt() - 1;
+                    scanner.nextLine(); // Consume newline
+
+                    if (movieIndex >= 0 && movieIndex < system.getMovies().size()) {
+                        Movie selectedMovie = system.getMovies().get(movieIndex);
+                        System.out.print("Enter your name: ");
+                        String name = scanner.nextLine();
+
+                        if (selectedMovie.cancelTicket(name)) {
+                            System.out.println("Cancellation successful!");
+                        } else {
+                            System.out.println("Name not found in booking list.");
+                        }
+                    } else {
+                        System.out.println("Invalid movie selection.");
+                    }
+                    break;
+                case 4: // Exit
+                    System.out.println("Exiting the system. Thank you!");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+}
